@@ -2,8 +2,8 @@ import Config
 
 # Configure your database
 config :medium_graphql_api, MediumGraphqlApi.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "root",
+  password: "root",
   hostname: "localhost",
   database: "medium_graphql_api_dev",
   stacktrace: true,
