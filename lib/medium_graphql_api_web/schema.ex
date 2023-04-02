@@ -3,6 +3,7 @@ defmodule MediumGraphqlApiWeb.Schema do
   use Absinthe.Schema
 
   import_types(MediumGraphqlApiWeb.Schemas.UserType)
+  import_types(MediumGraphqlApiWeb.Schemas.SessionType)
 
   query do
     @desc "Get a list of all users"
@@ -16,6 +17,12 @@ defmodule MediumGraphqlApiWeb.Schema do
     field :register_user, type: :user_type do
       arg(:input, non_null(:user_input_type))
       resolve(&Resolvers.UserResolver.register_user/3)
+    end
+
+    @desc "Login a user and return a JWT Token"
+    field :login_user, type: :session_type do
+      arg(:input, non_null(:session_input_type))
+      resolve(&Resolvers.SessionResolver.login_user/3)
     end
   end
 end

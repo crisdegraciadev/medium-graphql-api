@@ -10,8 +10,7 @@ defmodule MediumGraphqlApi.Application do
     children = [
       # Start the Ecto repository
       MediumGraphqlApi.Repo,
-      # Start the Telemetry supervisor
-      MediumGraphqlApiWeb.Telemetry,
+
       # Start the PubSub system
       {Phoenix.PubSub, name: MediumGraphqlApi.PubSub},
       # Start the Endpoint (http/https)

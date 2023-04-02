@@ -48,7 +48,8 @@ defmodule MediumGraphqlApi.MixProject do
       {:bcrypt_elixir, "~> 3.0"},
       {:absinthe, "~> 1.7"},
       {:absinthe_plug, "~> 1.5"},
-      {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:guardian, "~> 2.3"}
     ]
   end
 
