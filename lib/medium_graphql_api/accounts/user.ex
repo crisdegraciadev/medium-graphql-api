@@ -2,7 +2,7 @@ defmodule MediumGraphqlApi.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @dto_values [:email, :first_name, :last_name, :password, :password_confirmation, :role]
+  @dto_values [:email, :first_name, :last_name, :password, :password_confirmation]
 
   schema "users" do
     field :email, :string
@@ -11,7 +11,7 @@ defmodule MediumGraphqlApi.Accounts.User do
     field :password_hash, :string
     field :password, :string, virtual: true
     field :password_confirmation, :string, virtual: true
-    field :role, :string
+    field :role, :string, default: "user"
 
     timestamps()
   end
