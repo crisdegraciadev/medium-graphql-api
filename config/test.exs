@@ -18,7 +18,7 @@ config :medium_graphql_api, MediumGraphqlApi.Repo,
 config :medium_graphql_api, MediumGraphqlApiWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "h09B2mZd2guni/bYf9DH/nmOicXseYArQv8zjxXfF31Motz2DdfJD7H+q/y8dMWl",
-  server: false
+  server: true
 
 # In test we don't send emails.
 config :medium_graphql_api, MediumGraphqlApi.Mailer, adapter: Swoosh.Adapters.Test

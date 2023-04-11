@@ -45,7 +45,7 @@ config :logger, :console,
   metadata: [:request_id]
 
 # Guardian 
-config :medium_graphql_api, MediumGraphqlApi.Guardian,
+config :medium_graphql_api, MediumGraphqlApi.Accounts.Guardian,
   issuer: "medium_graphql_api",
   secret_key: "E/96oOczE+5spdzizu1rovzBquzkn1c6kXtkaMUNUlKROQsyi/ObsbQITF6ubgMs"
 

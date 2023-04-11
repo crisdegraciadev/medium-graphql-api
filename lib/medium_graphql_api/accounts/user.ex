@@ -32,7 +32,5 @@ defmodule MediumGraphqlApi.Accounts.User do
     change(changeset, Bcrypt.add_hash(password))
   end
 
-  defp hash_password(changeset) do
-    changeset
-  end
+  defp hash_password(changeset), do: changeset
 end

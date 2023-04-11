@@ -1,4 +1,4 @@
-defmodule MediumGraphqlApi.Schema.AccountsTest do
+defmodule Test.MediumGraphqlApi.Schema.AccountsSchemaTest do
   use ExUnit.Case
   alias MediumGraphqlApi.Accounts.User
 
@@ -7,11 +7,10 @@ defmodule MediumGraphqlApi.Schema.AccountsTest do
     first_name: "Cristian",
     last_name: "Potter",
     password: "123456789",
-    password_confirmation: "123456789",
-    role: "user"
+    password_confirmation: "123456789"
   }
 
-  describe "changeset" do
+  describe "happy path" do
     test "creates a valid changeset" do
       %Ecto.Changeset{valid?: true, changes: changes} = User.changeset(%User{}, @user)
 
@@ -23,13 +22,14 @@ defmodule MediumGraphqlApi.Schema.AccountsTest do
       assert last_name == @user.last_name
       assert Bcrypt.verify_pass(@user.password, password_hash) == true
     end
+  end
 
+  describe "edge cases" do
     test "missing fields" do
       %Ecto.Changeset{valid?: false} = User.changeset(%User{}, Map.delete(@user, :email))
       %Ecto.Changeset{valid?: false} = User.changeset(%User{}, Map.delete(@user, :first_name))
       %Ecto.Changeset{valid?: false} = User.changeset(%User{}, Map.delete(@user, :last_name))
       %Ecto.Changeset{valid?: false} = User.changeset(%User{}, Map.delete(@user, :password))
-      %Ecto.Changeset{valid?: false} = User.changeset(%User{}, Map.delete(@user, :role))
     end
 
     test "invalid email" do

@@ -1,14 +1,18 @@
 defmodule MediumGraphqlApi.Accounts.Session do
+  alias MediumGraphqlApi.Accounts
   alias Comeonin.Argon2
-  alias MediumGraphqlApi.Repo
   alias MediumGraphqlApi.Accounts.User
 
   def authenticate(%{email: email, password: password}) do
-    user = Repo.get_by(User, email: String.downcase(email))
+    user =
+      case Accounts.get_user_by(email: String.downcase(email)) do
+        nil -> {:error, :unauthorized}
+        user -> user
+      end
 
     case check_password(user, password) do
       true -> {:ok, user}
-      _ -> {:error, "Incorrect credentials"}
+      _ -> {:error, :unauthorized}
     end
   end
 
