@@ -1,4 +1,5 @@
 defmodule MediumGraphqlApi.Accounts.User do
+  alias MediumGraphqlApi.Utils.AtomType
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -11,7 +12,7 @@ defmodule MediumGraphqlApi.Accounts.User do
     field :password_hash, :string
     field :password, :string, virtual: true
     field :password_confirmation, :string, virtual: true
-    field :role, :string, default: "user"
+    field :role, AtomType, default: :user
 
     timestamps()
   end
@@ -26,6 +27,7 @@ defmodule MediumGraphqlApi.Accounts.User do
     |> validate_length(:password, min: 8, max: 64)
     |> validate_confirmation(:password)
     |> hash_password()
+    |> change(%{role: :user})
   end
 
   defp hash_password(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do

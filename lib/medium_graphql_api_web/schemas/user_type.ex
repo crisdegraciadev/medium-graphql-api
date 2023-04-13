@@ -1,4 +1,5 @@
 defmodule MediumGraphqlApiWeb.Schemas.UserType do
+  alias MediumGraphqlApiWeb.Resolvers
   use Absinthe.Schema.Notation
 
   object :user_type do
@@ -7,6 +8,7 @@ defmodule MediumGraphqlApiWeb.Schemas.UserType do
     field :first_name, :string
     field :last_name, :string
     field :role, :string
+    field :posts, list_of(:post_type), resolve: &Resolvers.PostResolver.posts/3
   end
 
   input_object :user_input_type do
