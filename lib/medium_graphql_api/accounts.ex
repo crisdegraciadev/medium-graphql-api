@@ -20,17 +20,17 @@ defmodule MediumGraphqlApi.Accounts do
     |> Repo.insert()
   end
 
-  def update_user(%User{} = user, attrs) do
-    user
-    |> User.changeset(attrs)
-    |> Repo.update()
+  def update_user(id, changes) do
+    case get_user(id) do
+      nil -> {:error, :not_found}
+      user -> user |> User.update_change(changes) |> Repo.update()
+    end
   end
 
-  def delete_user(%User{} = user) do
-    Repo.delete(user)
-  end
-
-  def change_user(%User{} = user, attrs \\ %{}) do
-    User.changeset(user, attrs)
+  def delete_user(id) do
+    case get_user(id) do
+      nil -> {:error, :not_found}
+      user -> Repo.delete(user)
+    end
   end
 end

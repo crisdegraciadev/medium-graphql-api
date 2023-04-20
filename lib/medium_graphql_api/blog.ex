@@ -25,8 +25,4 @@ defmodule MediumGraphqlApi.Blog do
     |> Post.changeset(attrs)
     |> Repo.update()
   end
-
-  def change_post(%Post{} = post, attrs \\ %{}) do
-    Post.changeset(post, attrs)
-  end
 end
