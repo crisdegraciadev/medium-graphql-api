@@ -1,4 +1,4 @@
-defmodule MediumGraphqlApi.MixProject do
+defmodule Api.MixProject do
   use Mix.Project
 
   def project do
@@ -19,7 +19,7 @@ defmodule MediumGraphqlApi.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {MediumGraphqlApi.Application, []},
+      mod: {Api.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

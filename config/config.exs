@@ -8,13 +8,13 @@
 import Config
 
 config :medium_graphql_api,
-  ecto_repos: [MediumGraphqlApi.Repo]
+  ecto_repos: [Api.Repo]
 
 # Configures the endpoint
-config :medium_graphql_api, MediumGraphqlApiWeb.Endpoint,
+config :medium_graphql_api, Web.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: MediumGraphqlApiWeb.ErrorView, accepts: ~w(json), layout: false],
-  pubsub_server: MediumGraphqlApi.PubSub,
+  render_errors: [view: Web.ErrorView, accepts: ~w(json), layout: false],
+  pubsub_server: Api.PubSub,
   live_view: [signing_salt: "7DOVeXBM"]
 
 # Configures the mailer
@@ -24,7 +24,7 @@ config :medium_graphql_api, MediumGraphqlApiWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :medium_graphql_api, MediumGraphqlApi.Mailer, adapter: Swoosh.Adapters.Local
+config :medium_graphql_api, Api.Mailer, adapter: Swoosh.Adapters.Local
 
 # Swoosh API client is needed for adapters other than SMTP.
 config :swoosh, :api_client, false
@@ -45,7 +45,7 @@ config :logger, :console,
   metadata: [:request_id]
 
 # Guardian 
-config :medium_graphql_api, MediumGraphqlApi.Accounts.Guardian,
+config :medium_graphql_api, Api.Accounts.Guardian,
   issuer: "medium_graphql_api",
   secret_key: "E/96oOczE+5spdzizu1rovzBquzkn1c6kXtkaMUNUlKROQsyi/ObsbQITF6ubgMs"
 

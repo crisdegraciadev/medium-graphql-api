@@ -1,4 +1,4 @@
-defmodule MediumGraphqlApi.Repo.Migrations.CreateUsers do
+defmodule Api.Repo.Migrations.CreateUsers do
   use Ecto.Migration
 
   def change do

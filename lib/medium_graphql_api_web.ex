@@ -1,12 +1,12 @@
-defmodule MediumGraphqlApiWeb do
+defmodule Web do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, views, channels and so on.
 
   This can be used in your application as:
 
-      use MediumGraphqlApiWeb, :controller
-      use MediumGraphqlApiWeb, :view
+      use  Web, :controller
+      use  Web, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -19,11 +19,11 @@ defmodule MediumGraphqlApiWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: MediumGraphqlApiWeb
+      use Phoenix.Controller, namespace: Web
 
       import Plug.Conn
-      import MediumGraphqlApiWeb.Gettext
-      alias MediumGraphqlApiWeb.Router.Helpers, as: Routes
+      import Web.Gettext
+      alias Web.Router.Helpers, as: Routes
     end
   end
 
@@ -31,7 +31,7 @@ defmodule MediumGraphqlApiWeb do
     quote do
       use Phoenix.View,
         root: "lib/medium_graphql_api_web/templates",
-        namespace: MediumGraphqlApiWeb
+        namespace: Web
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
@@ -54,7 +54,7 @@ defmodule MediumGraphqlApiWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import MediumGraphqlApiWeb.Gettext
+      import Web.Gettext
     end
   end
 
@@ -63,9 +63,9 @@ defmodule MediumGraphqlApiWeb do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
-      import MediumGraphqlApiWeb.ErrorHelpers
-      import MediumGraphqlApiWeb.Gettext
-      alias MediumGraphqlApiWeb.Router.Helpers, as: Routes
+      import Web.ErrorHelpers
+      import Web.Gettext
+      alias Web.Router.Helpers, as: Routes
     end
   end
 

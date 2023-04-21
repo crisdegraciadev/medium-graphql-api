@@ -5,7 +5,7 @@ import Config
 # The MIX_TEST_PARTITION environment variable can be used
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
-config :medium_graphql_api, MediumGraphqlApi.Repo,
+config :medium_graphql_api, Api.Repo,
   username: "root",
   password: "root",
   hostname: "localhost",
@@ -15,13 +15,13 @@ config :medium_graphql_api, MediumGraphqlApi.Repo,
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :medium_graphql_api, MediumGraphqlApiWeb.Endpoint,
+config :medium_graphql_api, Web.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "h09B2mZd2guni/bYf9DH/nmOicXseYArQv8zjxXfF31Motz2DdfJD7H+q/y8dMWl",
   server: true
 
 # In test we don't send emails.
-config :medium_graphql_api, MediumGraphqlApi.Mailer, adapter: Swoosh.Adapters.Test
+config :medium_graphql_api, Api.Mailer, adapter: Swoosh.Adapters.Test
 
 # Print only warnings and errors during test
 config :logger, level: :warn

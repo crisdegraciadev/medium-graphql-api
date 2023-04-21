@@ -1,4 +1,4 @@
-defmodule MediumGraphqlApi.Repo.Migrations.UniqueEmail do
+defmodule Api.Repo.Migrations.UniqueEmail do
   use Ecto.Migration
 
   def change do
