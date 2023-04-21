@@ -30,18 +30,25 @@ defmodule Test.MediumGraphqlApi.Accounts do
 
     test "get error when creating a user with an incorrect DTO" do
       {:error, changeset} = Accounts.create_user(%{})
-      %Changeset{errors: errors} = changeset
+      %Changeset{errors: error_list} = changeset
 
-      assert is_list(errors)
-    end
-  end
+      assert is_list(error_list)
 
-  describe "list users without users in db" do
-    test "get an empty list of users" do
-      user_list = Accounts.list_users()
+      [
+        email_error,
+        first_name_error,
+        last_name_error,
+        password_error,
+        password_confirmation_error | []
+      ] = error_list
 
-      assert is_list(user_list)
-      assert user_list == []
+      assert {:email, {"can't be blank", [validation: :required]}} == email_error
+      assert {:first_name, {"can't be blank", [validation: :required]}} == first_name_error
+      assert {:last_name, {"can't be blank", [validation: :required]}} == last_name_error
+      assert {:password, {"can't be blank", [validation: :required]}} == password_error
+
+      assert {:password_confirmation, {"can't be blank", [validation: :required]}} ==
+               password_confirmation_error
     end
   end
 
@@ -61,15 +68,20 @@ defmodule Test.MediumGraphqlApi.Accounts do
     end
   end
 
-  describe "get user by id" do
+  describe "list users without users in db" do
+    test "get an empty list of users" do
+      user_list = Accounts.list_users()
+
+      assert is_list(user_list)
+      assert user_list == []
+    end
+  end
+
+  describe "get user condition" do
     setup [:seed_with_users]
 
-    test "user is found" do
-      user_list = Accounts.list_users()
-      [user | _rest] = user_list
-
-      %Accounts.User{id: id} = user
-      changeset = Accounts.get_user(id)
+    test "user is found", %{user_list: [%Accounts.User{id: user_id} | _rest]} do
+      changeset = Accounts.get_user(user_id)
 
       assert is_struct(changeset, Accounts.User)
     end
@@ -83,16 +95,11 @@ defmodule Test.MediumGraphqlApi.Accounts do
   describe "update user" do
     setup [:seed_with_users]
 
-    test "existing user updated" do
-      user_list = Accounts.list_users()
-      [user | _rest] = user_list
-
-      %Accounts.User{id: id} = user
-
-      {:ok, changeset} = Accounts.update_user(id, %{first_name: "Papadopoulus"})
-      %Accounts.User{first_name: "Papadopoulus"} = changeset
+    test "existing user updated", %{user_list: [%Accounts.User{id: user_id} | _rest]} do
+      {:ok, changeset} = Accounts.update_user(user_id, %{first_name: "Papadopoulus"})
 
       assert is_struct(changeset, Accounts.User)
+      %Accounts.User{first_name: "Papadopoulus"} = changeset
     end
 
     test "user not found" do
@@ -110,8 +117,8 @@ defmodule Test.MediumGraphqlApi.Accounts do
       assert !Enum.empty?(user_list)
       assert length(user_list) == 2
 
-      %Accounts.User{id: id} = Enum.at(user_list, 0)
-      Accounts.delete_user(id)
+      %Accounts.User{id: user_id} = Enum.at(user_list, 0)
+      Accounts.delete_user(user_id)
 
       user_list_without_deleted_user = Accounts.list_users()
 
@@ -138,8 +145,7 @@ defmodule Test.MediumGraphqlApi.Accounts do
   end
 
   defp seed_with_users(_context) do
-    Accounts.create_user(@user1)
-    Accounts.create_user(@user2)
-    :ok
+    user_list = [elem(Accounts.create_user(@user1), 1), elem(Accounts.create_user(@user2), 1)]
+    [user_list: user_list]
   end
 end

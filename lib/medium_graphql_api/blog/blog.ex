@@ -20,9 +20,17 @@ defmodule MediumGraphqlApi.Blog do
     |> Repo.insert()
   end
 
-  def update_post(%Post{} = post, attrs) do
-    post
-    |> Post.changeset(attrs)
-    |> Repo.update()
+  def update_post(id, changes) do
+    case get_post(id) do
+      nil -> {:error, :not_found}
+      post -> post |> Post.update_change(changes) |> Repo.update()
+    end
+  end
+
+  def delete_post(id) do
+    case get_post(id) do
+      nil -> {:error, :not_found}
+      post -> Repo.delete(post)
+    end
   end
 end

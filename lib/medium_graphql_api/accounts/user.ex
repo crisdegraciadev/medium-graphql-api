@@ -30,9 +30,7 @@ defmodule MediumGraphqlApi.Accounts.User do
     |> change(%{role: :user})
   end
 
-  def update_change(user, changes) do
-    change(user, changes)
-  end
+  def update_change(user, changes), do: change(user, changes)
 
   defp hash_password(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
     change(changeset, Bcrypt.add_hash(password))
