@@ -1,6 +1,6 @@
 defmodule Test.Api.Service.Blog do
   use ExUnit.Case, async: true
-  use Test.Setup.DataCase, async: true
+  use Test.Support.Case.DataCase, async: true
   alias Api.Blog
   alias Api.Accounts
 

@@ -4,15 +4,9 @@ defmodule Api.Accounts.Session do
   alias Api.Accounts.User
 
   def authenticate(%{email: email, password: password}) do
-    user =
-      case Accounts.get_user_by(email: String.downcase(email)) do
-        nil -> {:error, :unauthorized}
-        user -> user
-      end
-
-    case check_password(user, password) do
-      true -> {:ok, user}
-      _ -> {:error, :unauthorized}
+    case Accounts.get_user_by(email: String.downcase(email)) do
+      nil -> {:error, :unauthorized}
+      user -> if check_password(user, password), do: {:ok, user}, else: {:error, :unauthorized}
     end
   end
 

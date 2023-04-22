@@ -1,6 +1,6 @@
 defmodule Test.Api.Service.Session do
   use ExUnit.Case, async: true
-  use Test.Setup.DataCase, async: true
+  use Test.Support.Case.DataCase, async: true
   alias Api.Accounts.Guardian
   alias Api.Accounts.Session
   alias Api.Accounts

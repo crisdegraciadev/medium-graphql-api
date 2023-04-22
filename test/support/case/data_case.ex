@@ -1,4 +1,4 @@
-defmodule Test.Setup.DataCase do
+defmodule Test.Support.Case.DataCase do
   use ExUnit.CaseTemplate
 
   setup do

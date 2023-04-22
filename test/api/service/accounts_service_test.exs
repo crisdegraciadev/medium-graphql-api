@@ -1,6 +1,6 @@
 defmodule Test.Api.Service.Accounts do
   use ExUnit.Case, async: true
-  use Test.Setup.DataCase, async: true
+  use Test.Support.Case.DataCase, async: true
   alias Test.Api.Accounts
   alias Ecto.Changeset
   alias Api.Accounts

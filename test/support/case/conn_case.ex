@@ -1,4 +1,4 @@
-defmodule Test.Setup.ConnCase do
+defmodule Test.Support.Case.ConnCase do
   use ExUnit.CaseTemplate
 
   using do
@@ -6,7 +6,7 @@ defmodule Test.Setup.ConnCase do
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
-      import Test.Setup.ConnCase
+      import Test.Support.Case.ConnCase
 
       alias Web.Router.Helpers, as: Routes
 
@@ -16,7 +16,7 @@ defmodule Test.Setup.ConnCase do
   end
 
   setup do
-    Test.Setup.DataCase.setup_sandbox()
+    Test.Support.Case.DataCase.setup_sandbox()
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end
