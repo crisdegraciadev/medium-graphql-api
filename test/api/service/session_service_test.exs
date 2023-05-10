@@ -15,16 +15,16 @@ defmodule Test.Api.Service.Session do
 
   describe "happy path" do
     test "jwt token is generated and is valid" do
-      {:ok, _createdUser} = Accounts.create_user(@user)
-      {:ok, authUser} = Session.authenticate(%{email: @user.email, password: @user.password})
-      {:ok, jwt_token, _opts} = Guardian.encode_and_sign(authUser)
+      {:ok, _created_user} = Accounts.create_user(@user)
+      {:ok, auth_user} = Session.authenticate(%{email: @user.email, password: @user.password})
+      {:ok, jwt_token, _opts} = Guardian.encode_and_sign(auth_user)
       {:ok, _claims} = Guardian.decode_and_verify(jwt_token)
     end
   end
 
   describe "edge cases" do
     test "invalid credentials raise error" do
-      {:ok, _createdUser} = Accounts.create_user(@user)
+      {:ok, _created_user} = Accounts.create_user(@user)
       {:error, :unauthorized} = Session.authenticate(%{email: @user.email, password: "xcvbnm"})
     end
   end

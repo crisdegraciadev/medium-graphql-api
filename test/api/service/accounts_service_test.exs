@@ -1,29 +1,22 @@
 defmodule Test.Api.Service.Accounts do
   use ExUnit.Case, async: true
   use Test.Support.Case.DataCase, async: true
+  alias Test.Support.Fixtures
   alias Test.Api.Accounts
   alias Ecto.Changeset
   alias Api.Accounts
 
-  @user1 %{
-    email: "cris@gmail.com",
-    first_name: "Cristian",
-    last_name: "Potter",
-    password: "123456789",
-    password_confirmation: "123456789"
-  }
-
-  @user2 %{
-    email: "mar@gmail.com",
-    first_name: "Marcos",
-    last_name: "Frinch",
-    password: "123456789",
-    password_confirmation: "123456789"
-  }
-
   describe "create a user" do
     test "create a user with a correct DTO" do
-      {:ok, changeset} = Accounts.create_user(@user1)
+      user = %{
+        email: "cris@gmail.com",
+        first_name: "Cristian",
+        last_name: "Potter",
+        password: "123456789",
+        password_confirmation: "123456789"
+      }
+
+      {:ok, changeset} = Accounts.create_user(user)
 
       assert is_struct(changeset, Accounts.User)
     end
@@ -53,7 +46,9 @@ defmodule Test.Api.Service.Accounts do
   end
 
   describe "list users with users in db" do
-    setup [:seed_with_users]
+    setup do
+      [user_list: Fixtures.Accounts.create_test_account_list()]
+    end
 
     test "get a list of 2 users" do
       user_list = Accounts.list_users()
@@ -78,7 +73,9 @@ defmodule Test.Api.Service.Accounts do
   end
 
   describe "get user condition" do
-    setup [:seed_with_users]
+    setup do
+      [user_list: Fixtures.Accounts.create_test_account_list()]
+    end
 
     test "user is found", %{user_list: [%Accounts.User{id: user_id} | _rest]} do
       changeset = Accounts.get_user(user_id)
@@ -93,7 +90,9 @@ defmodule Test.Api.Service.Accounts do
   end
 
   describe "update user" do
-    setup [:seed_with_users]
+    setup do
+      [user_list: Fixtures.Accounts.create_test_account_list()]
+    end
 
     test "existing user updated", %{user_list: [%Accounts.User{id: user_id} | _rest]} do
       {:ok, changeset} = Accounts.update_user(user_id, %{first_name: "Papadopoulus"})
@@ -108,7 +107,9 @@ defmodule Test.Api.Service.Accounts do
   end
 
   describe "delete user" do
-    setup [:seed_with_users]
+    setup do
+      [user_list: Fixtures.Accounts.create_test_account_list()]
+    end
 
     test "user found and deleted" do
       user_list = Accounts.list_users()
@@ -142,10 +143,5 @@ defmodule Test.Api.Service.Accounts do
       assert !Enum.empty?(user_list_without_deleted_user)
       assert length(user_list_without_deleted_user) == 2
     end
-  end
-
-  defp seed_with_users(_context) do
-    user_list = [elem(Accounts.create_user(@user1), 1), elem(Accounts.create_user(@user2), 1)]
-    [user_list: user_list]
   end
 end

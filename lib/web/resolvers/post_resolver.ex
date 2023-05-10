@@ -7,7 +7,7 @@ defmodule Web.Resolvers.PostResolver do
   def create_post(_parent, %{input: input}, %{context: %{current_user: current_user}}) do
     post_input = Map.merge(input, %{user_id: current_user.id})
 
-    case IO.inspect(Blog.create_post(post_input)) do
+    case Blog.create_post(post_input) do
       {:ok, post} ->
         {:ok, post}
 

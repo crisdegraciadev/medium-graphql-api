@@ -1,32 +1,21 @@
 defmodule Test.Api.Service.Blog do
   use ExUnit.Case, async: true
   use Test.Support.Case.DataCase, async: true
+  alias Test.Support.Fixtures
   alias Api.Blog
-  alias Api.Accounts
 
-  @user %{
-    email: "cris@gmail.com",
-    first_name: "Cristian",
-    last_name: "Potter",
-    password: "123456789",
-    password_confirmation: "123456789"
-  }
-
-  @post1 %{
-    title: "My first post",
-    content: "The test post content"
-  }
-
-  @post2 %{
-    title: "My second post",
-    content: "The test post content"
-  }
-
-  setup [:seed_with_user]
+  setup do
+    [user: Fixtures.Accounts.create_test_account()]
+  end
 
   describe "create a valid post" do
     test "create a valid post", %{user: %{id: user_id}} do
-      {:ok, changeset} = Blog.create_post(Map.put(@post1, :user_id, user_id))
+      post = %{
+        title: "My first post",
+        content: "The test post content"
+      }
+
+      {:ok, changeset} = Blog.create_post(Map.put(post, :user_id, user_id))
       assert is_struct(changeset, Blog.Post)
     end
 
@@ -44,7 +33,12 @@ defmodule Test.Api.Service.Blog do
     end
 
     test "get an error when creating a post with unexisting user" do
-      {:error, changeset} = Blog.create_post(Map.put(@post1, :user_id, 9_999_999))
+      post = %{
+        title: "My first post",
+        content: "The test post content"
+      }
+
+      {:error, changeset} = Blog.create_post(Map.put(post, :user_id, 9_999_999))
       %Ecto.Changeset{errors: error_list} = changeset
 
       assert is_list(error_list)
@@ -59,7 +53,9 @@ defmodule Test.Api.Service.Blog do
   end
 
   describe "list all posts" do
-    setup [:seed_with_posts]
+    setup %{user: %{id: user_id}} do
+      [post_list: Fixtures.Posts.create_test_post_list(user_id)]
+    end
 
     test "get a list of 2 posts" do
       post_list = Blog.list_posts()
@@ -84,7 +80,9 @@ defmodule Test.Api.Service.Blog do
   end
 
   describe "find posts by condition" do
-    setup [:seed_with_posts]
+    setup %{user: %{id: user_id}} do
+      [post_list: Fixtures.Posts.create_test_post_list(user_id)]
+    end
 
     test "post is found", %{post_list: [%Blog.Post{id: post_id} | _rest]} do
       changeset = Blog.get_post(post_id)
@@ -100,7 +98,9 @@ defmodule Test.Api.Service.Blog do
   end
 
   describe "update post" do
-    setup [:seed_with_posts]
+    setup %{user: %{id: user_id}} do
+      [post_list: Fixtures.Posts.create_test_post_list(user_id)]
+    end
 
     test "existing post updated", %{post_list: [%Blog.Post{id: post_id} | _rest]} do
       {:ok, changeset} = Blog.update_post(post_id, %{title: "New post title"})
@@ -115,7 +115,9 @@ defmodule Test.Api.Service.Blog do
   end
 
   describe "delete post" do
-    setup [:seed_with_posts]
+    setup %{user: %{id: user_id}} do
+      [post_list: Fixtures.Posts.create_test_post_list(user_id)]
+    end
 
     test "post found and deleted" do
       post_list = Blog.list_posts()
@@ -149,19 +151,5 @@ defmodule Test.Api.Service.Blog do
       assert !Enum.empty?(post_list_without_deleted_post)
       assert length(post_list_without_deleted_post) == 2
     end
-  end
-
-  defp seed_with_user(_context) do
-    {:ok, user} = Accounts.create_user(@user)
-    [user: user]
-  end
-
-  defp seed_with_posts(%{user: %{id: user_id}}) do
-    post_list = [
-      elem(Blog.create_post(Map.put(@post1, :user_id, user_id)), 1),
-      elem(Blog.create_post(Map.put(@post2, :user_id, user_id)), 1)
-    ]
-
-    [post_list: post_list]
   end
 end

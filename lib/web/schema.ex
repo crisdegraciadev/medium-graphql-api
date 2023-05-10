@@ -21,6 +21,11 @@ defmodule Web.Schema do
       middleware(Authorize, :user)
       resolve(&Resolvers.UserResolver.users/3)
     end
+    
+    @desc "Get a list of Posts"
+    field :posts, list_of(:post_type) do
+      resolve(&Resolvers.PostResolver.posts/3)
+    end
   end
 
   mutation do

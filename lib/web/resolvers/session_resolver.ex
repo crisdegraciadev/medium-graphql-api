@@ -7,7 +7,7 @@ defmodule Web.Resolvers.SessionResolver do
          {:ok, jwt_token, _} <- Guardian.encode_and_sign(user) do
       {:ok, %{token: jwt_token, user: user}}
     else
-      error -> IO.inspect(error)
+      error -> error
     end
   end
 end

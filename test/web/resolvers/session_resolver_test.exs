@@ -1,18 +1,12 @@
 defmodule Test.Web.Resolver.Session do
   use ExUnit.Case, async: true
   use Test.Support.Case.ConnCase, async: true
-  alias Test.Support.Fixtures
   alias GraphqlBuilder.Query
-  alias Mix.Tasks.Phx.Routes
-
-  setup %{conn: conn} do
-    :ok
-  end
 
   describe "login user" do
     test "correct credentials", %{conn: conn} do
-      test_user = %{
-        email: "test@gmail.com",
+      user_input = %{
+        email: "test@test.com",
         firstName: "testy",
         lastName: "tytest",
         password: "123456789",
@@ -22,7 +16,7 @@ defmodule Test.Web.Resolver.Session do
       register_user = %Query{
         operation: :register_user,
         variables: [
-          input: test_user
+          input: user_input
         ],
         fields: [:id]
       }
@@ -30,7 +24,7 @@ defmodule Test.Web.Resolver.Session do
       register_user_mutation = GraphqlBuilder.mutation(register_user)
       conn = post(conn, "/api/graphql", %{"query" => register_user_mutation})
 
-      %{email: email, password: password} = test_user
+      %{email: email, password: password} = user_input
 
       login = %Query{
         operation: :login_user,
@@ -41,13 +35,15 @@ defmodule Test.Web.Resolver.Session do
       login_mutation = GraphqlBuilder.mutation(login)
       conn = post(conn, "/api/graphql", %{"query" => login_mutation})
 
-      %{"data" => %{"login_user" => %{"token" => token}}} = json_response(conn, 200)
+      %{"data" => %{"login_user" => login_user}} = json_response(conn, 200)
+
+      assert Map.has_key?(login_user, "token")
     end
 
     test "incorrect credentials", %{conn: conn} do
       login = %Query{
         operation: :login_user,
-        variables: [input: [email: "cris@gmail", password: "111222333444"]],
+        variables: [input: [email: "test@test.com", password: "111222333444"]],
         fields: [:token]
       }
 
