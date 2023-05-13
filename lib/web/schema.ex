@@ -1,7 +1,7 @@
 defmodule Web.Schema do
+  alias Api.GenericDataloader
   alias Web.Resolvers
   alias Web.Middleware.Authorize
-
   use Absinthe.Schema
 
   import_types(Web.Schemas.UserType)
@@ -21,7 +21,7 @@ defmodule Web.Schema do
       middleware(Authorize, :user)
       resolve(&Resolvers.UserResolver.users/3)
     end
-    
+
     @desc "Get a list of Posts"
     field :posts, list_of(:post_type) do
       resolve(&Resolvers.PostResolver.posts/3)
@@ -47,5 +47,17 @@ defmodule Web.Schema do
       arg(:input, non_null(:post_input_type))
       resolve(&Resolvers.PostResolver.create_post/3)
     end
+  end
+
+  def context(ctx) do
+    loader =
+      Dataloader.new()
+      |> Dataloader.add_source(GenericDataloader, GenericDataloader.data())
+
+    Map.put(ctx, :loader, loader)
+  end
+
+  def plugins do
+    [Absinthe.Middleware.Dataloader] ++ Absinthe.Plugin.defaults()
   end
 end

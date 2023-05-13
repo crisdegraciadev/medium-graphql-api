@@ -50,7 +50,8 @@ defmodule Api.MixProject do
       {:absinthe_plug, "~> 1.5"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:guardian, "~> 2.3"},
-      {:graphql_builder, "~> 0.3.0"}
+      {:graphql_builder, "~> 0.3.0"},
+      {:dataloader, "~> 1.0.0"}
     ]
   end
 

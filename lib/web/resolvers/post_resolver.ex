@@ -16,11 +16,12 @@ defmodule Web.Resolvers.PostResolver do
     end
   end
 
-  # def posts(parent, _input, _resolution) do
-  #   parent |> IO.inspect()
-  # end
-
   def posts(%User{id: user_id}, _input, _resolution) do
     {:ok, Blog.list_posts_by_user_id(user_id)}
+  end
+
+  # TODO: Implement with DataLoader
+  def posts(_parent, _input, _resolution) do
+    {:ok, Blog.list_posts()}
   end
 end
